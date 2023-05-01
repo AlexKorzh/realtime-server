@@ -16,15 +16,6 @@
       }
     </style>
     <script>
-      const updateNode = (node) => {
-        const shape = document.getElementById(node.id);
-        const { color } = node;
-        
-        updateDimensions(shape, node);
-        updatePosition(shape, node);
-        updateColor(shape, color);
-      }
-
       const socket = io();
 
       socket.on('client-createNode', (nodeProps) => {
