@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.io Example</title>
+  </head>
+  <body>
+    <h1>Socket.io Example</h1>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./utils.js"></script>
+    <style>
+      .body {
+        position: relative;
+      }
+      .shape {
+        position: absolute;
+      }
+    </style>
+    <script>
+      const updateNode = (node) => {
+        const shape = document.getElementById(node.id);
+        const { color } = node;
+        
+        updateDimensions(shape, node);
+        updatePosition(shape, node);
+        updateColor(shape, color);
+      }
+
+      const socket = io();
+
+      socket.on('client-createNode', (nodeProps) => {
+        createNode(nodeProps);
+      });
+
+      socket.on('client-deleteNode', (nodeId) => {
+        deleteNode(nodeId);
+      });
+
+      socket.on('client-propertyChange', (nodesShape) => {
+        if (nodesShape.length > 1) {
+          nodesShape.forEach(node => updateNode(node));
+        }
+
+        if (nodesShape.length === 1) {
+          const node = nodesShape[0];
+
+          updateNode(node);
+        }
+      });
+    </script>
+  </body>
+</html>
